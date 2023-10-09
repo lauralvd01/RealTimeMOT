@@ -139,7 +139,7 @@ if __name__ == '__main__' :
         # Draw bounding box
         if ok and verifBbox(bbox,0,width,0,height,0,width,0,height):
             # Tracking success and bbox in the image
-            drawRectangle(frame,bbox)
+            drawRectangle(frame,bbox) 
         else :
             # Tracking failure
             if not fail:
@@ -172,7 +172,7 @@ print(total_frame)
 print(int(frames_computed_per_second))
 
 # Register data
-data_folder = "dataFiles/"
+data_folder = "dataFiles/test/"
 data = pandas.DataFrame({"Type de video":[" "], "Point teste":[" "], "Tracker":[tracker_type], "Input":[video_input_file_name], "Output":[video_input_file_name+'_'+tracker_type], "FPS":[fps], "Total frames":[total_frame], "Initialisation":[" "], "Initialisation scale":[bbox_init], "Frames Computed per Second":[frames_computed_per_second], "Objet cache":[" "], "Frame before":[" "], "Tracking Failure":[fail], "Frames before":[fail_time if fail else " "]})
 data.to_excel(data_folder+video_input_file_name+'_'+tracker_type+'.xlsx', sheet_name='data',index=[1])
 
