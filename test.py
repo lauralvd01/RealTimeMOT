@@ -1,5 +1,6 @@
 import cv2
 import sys
+import pandas
 
 (major_ver, minor_ver, subminor_ver) = (cv2.__version__).split('.')
 
@@ -101,7 +102,8 @@ if __name__ == '__main__' :
     
     # Draw bounding box
     if ok and verifBbox(bbox,0,width,0,height,0,width,0,height):
-        print(bbox)
+        bbox_init = str(bbox)
+        print(bbox_init)
         drawRectangle(frame,bbox)
 
     # Initialize tracker with first frame and bounding box
@@ -162,9 +164,17 @@ if __name__ == '__main__' :
         k = cv2.waitKey(1) & 0xff
         if k == 27 : break
 
+if not fail:
+    frames_computed_per_second = int((frame_count-1)/(total_exec_time-exec_time))
+
 print(fail_time)
 print(total_frame)
 print(int(frames_computed_per_second))
+
+# Register data
+data_folder = "dataFiles/"
+data = pandas.DataFrame({"Type de video":[" "], "Point teste":[" "], "Tracker":[tracker_type], "Input":[video_input_file_name], "Output":[video_input_file_name+'_'+tracker_type], "FPS":[fps], "Total frames":[total_frame], "Initialisation":[" "], "Initialisation scale":[bbox_init], "Frames Computed per Second":[frames_computed_per_second], "Objet cache":[" "], "Frame before":[" "], "Tracking Failure":[fail], "Frames before":[fail_time if fail else " "]})
+data.to_excel(data_folder+video_input_file_name+'_'+tracker_type+'.xlsx', sheet_name='data',index=[1])
 
 video.release()
 video_out.release()
