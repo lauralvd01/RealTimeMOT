@@ -74,6 +74,7 @@ if __name__ == '__main__' :
         width = int(video.get(cv2.CAP_PROP_FRAME_WIDTH))
         height = int(video.get(cv2.CAP_PROP_FRAME_HEIGHT))
         fps = video.get(cv2.CAP_PROP_FPS)
+        total_frame = int(video.get(cv2.CAP_PROP_FRAME_COUNT))
     
     # Create output video
     output_folder = "outputVideos/"
@@ -99,11 +100,8 @@ if __name__ == '__main__' :
     bbox = cv2.selectROI(frame, False)
     
     # Draw bounding box
-    if ok:
-        ok_bbox = verifBbox(bbox,0,width,0,height,0,width,0,height)
-        if ok_bbox:
-            # Bbox in the image
-            drawRectangle(frame,bbox)
+    if ok and verifBbox(bbox,0,width,0,height,0,width,0,height):
+        drawRectangle(frame,bbox)
 
     # Initialize tracker with first frame and bounding box
     ok = tracker.init(frame, bbox)
@@ -112,6 +110,10 @@ if __name__ == '__main__' :
     tick_freq = cv2.getTickFrequency()
     frame_count = 0
     total_exec_time = 0
+    
+    # Initialize fail timers
+    fail = False
+    fail_time = 0
     
     while True:
         # Read a new frame
@@ -131,21 +133,21 @@ if __name__ == '__main__' :
         total_exec_time += exec_time
         
         # Draw bounding box
-        if ok:
-            # Tracking success
-            ok_bbox = verifBbox(bbox,0,width,0,height,0,width,0,height)
-            if ok_bbox:
-                # Bbox in the image
-                drawRectangle(frame,bbox)
+        if ok and verifBbox(bbox,0,width,0,height,0,width,0,height):
+            # Tracking success and bbox in the image
+            drawRectangle(frame,bbox)
         else :
             # Tracking failure
-            drawText(frame, "Tracking failure detected", (100,80), (0,0,255))
+            if not fail:
+                fail_time = frame_count
+            fail = True
+            drawText(frame, "Tracking failure detected", (100,90), (0,0,255))
 
         # Display tracker type on frame
-        drawText(frame, "Tracker " + tracker_type, (100,20))
+        drawText(frame, "Tracker " + tracker_type, (100,40))
     
         # Display FPS on frame
-        drawText(frame, "Frames computed per s : " + str(int(frame_count/total_exec_time)), (100,50))
+        drawText(frame, "Frames computed per s : " + str(int(frame_count/total_exec_time)), (100,70))
 
         # Uncomment to display result
         #cv2.imshow("Tracking", frame)
@@ -156,6 +158,9 @@ if __name__ == '__main__' :
         # Exit if ESC pressed
         k = cv2.waitKey(1) & 0xff
         if k == 27 : break
+
+print(fail_time)
+print(total_frame)
 
 video.release()
 video_out.release()
