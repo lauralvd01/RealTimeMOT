@@ -38,7 +38,7 @@ if __name__ == '__main__' :
     # Instead of MIL, you can also use
 
     tracker_types = ['BOOSTING', 'MIL','KCF', 'TLD', 'MEDIANFLOW', 'GOTURN', 'MOSSE', 'CSRT']
-    tracker_type = tracker_types[2]
+    tracker_type = tracker_types[6]
 
     if int(minor_ver) < 3:
         tracker = cv2.Tracker_create(tracker_type)
@@ -94,13 +94,14 @@ if __name__ == '__main__' :
         sys.exit()
     
     # Define an initial bounding box
-    bbox = (287, 23, 86, 320)
+    bbox = (421, 501, 118, 184)
     
     # Uncomment the line below to select a different bounding box
-    bbox = cv2.selectROI(frame, False)
+    #bbox = cv2.selectROI(frame, False)
     
     # Draw bounding box
     if ok and verifBbox(bbox,0,width,0,height,0,width,0,height):
+        print(bbox)
         drawRectangle(frame,bbox)
 
     # Initialize tracker with first frame and bounding box
@@ -114,6 +115,7 @@ if __name__ == '__main__' :
     # Initialize fail timers
     fail = False
     fail_time = 0
+    frames_computed_per_second = 0
     
     while True:
         # Read a new frame
@@ -140,6 +142,7 @@ if __name__ == '__main__' :
             # Tracking failure
             if not fail:
                 fail_time = frame_count
+                frames_computed_per_second = int((frame_count-1)/(total_exec_time-exec_time))
             fail = True
             drawText(frame, "Tracking failure detected", (100,90), (0,0,255))
 
@@ -161,6 +164,7 @@ if __name__ == '__main__' :
 
 print(fail_time)
 print(total_frame)
+print(int(frames_computed_per_second))
 
 video.release()
 video_out.release()
