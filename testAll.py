@@ -28,10 +28,10 @@ def createTracker(tracker_type) :
         if tracker_type == 'CSRT':
             return cv2.legacy.TrackerCSRT_create()
 
-def drawRectangle(frame, bbox):
+def drawRectangle(frame, bbox,color):
     p1 = (int(bbox[0]), int(bbox[1]))
     p2 = (int(bbox[0] + bbox[2]), int(bbox[1] + bbox[3]))
-    cv2.rectangle(frame, p1, p2, (255,0,0), 2, 1)
+    cv2.rectangle(frame, p1, p2, color, 2, 1)
 
 def drawText(frame, txt, location, color=(110, 170, 50)):
     font = cv2.FONT_HERSHEY_SIMPLEX
@@ -87,6 +87,9 @@ if __name__ == '__main__' :
                 # Create results data file
                 data = {"Test":[num_test+i for i in range(N)],"Type de video":[video_type for i in range(N)], "Point teste":[None for i in range(N)], "Tracker":[tracker_type for i in range(N)], "Input":[video_input_file_name+video_input_file_extension for i in range(N)], "Output":["-1" for i in range(N)], "FPS":[-1.00 for i in range(N)], "Total frames":[-1 for i in range(N)], "Initialisation":["-1" for i in range(N)], "Initialisation scale":["-1" for i in range(N)],"Color":colors, "Frames Computed per Second":[-1 for i in range(N)], "Objet cache":[None for i in range(N)], "Frame before":[None for i in range(N)], "Tracking Failure":[None for i in range(N)], "Frames before":[None for i in range(N)]}
                 
+                # Initialize model for output video
+                model_video_out_file = input_folder+video_input_file_name+video_input_file_extension
+                
                 for num_cible in range(len(targets_data)) :
                     
                     # Read video
@@ -119,21 +122,31 @@ if __name__ == '__main__' :
                     video_output_file_name = video_input_file_name + '_' + tracker_type + '_' + str(num_cible + 1)
                     video_output_file_extension = ".avi"
                     video_out = cv2.VideoWriter(output_folder+video_output_file_name+video_output_file_extension, cv2.VideoWriter_fourcc(*"XVID"), fps, (width, height))
-                        
+                      
                     # Exit if video output is not opened
                     if not video_out.isOpened():
                         print("Could not write video output")
                         sys.exit()
+                    
+                    # Read model for output video
+                    print(model_video_out_file)
+                    model_video_out = cv2.VideoCapture(model_video_out_file)
+                        
+                    # Exit if video output is not opened
+                    if not model_video_out.isOpened():
+                        print("Could not write model video output")
+                        sys.exit()
                 
                     # Read first frame
                     ok, frame = video.read()
-                    if not ok:
+                    model_ok, model_frame = model_video_out.read()
+                    if not ok or not model_ok:
                         print('Cannot read video file')
                         sys.exit()
     
                     # Draw bounding box
-                    if ok and verifBbox(bbox_init,0,width,0,height,0,width,0,height):
-                        drawRectangle(frame,bbox_init)
+                    if ok and model_ok and verifBbox(bbox_init,0,width,0,height,0,width,0,height):
+                        drawRectangle(model_frame,bbox_init,colors[num_cible])
 
                     # Initialize tracker with first frame and bounding box
                     tracker = createTracker(tracker_type)
@@ -152,7 +165,8 @@ if __name__ == '__main__' :
                     while True:
                         # Read a new frame
                         ok, frame = video.read()
-                        if not ok:
+                        model_ok, model_frame = model_video_out.read()
+                        if not ok or not model_ok:
                             break
                         
                         # Start timer
@@ -165,37 +179,38 @@ if __name__ == '__main__' :
                         exec_time = max((cv2.getTickCount() - timer) / tick_freq,0)
 
                         # Draw bounding box
-                        if ok and verifBbox(bbox,0,width,0,height,0,width,0,height):
+                        if ok and model_ok and verifBbox(bbox,0,width,0,height,0,width,0,height):
                             # Tracking success and bbox in the image
-                            drawRectangle(frame,bbox) 
+                            drawRectangle(model_frame,bbox,colors[num_cible]) 
                         else :
                             # Tracking failure
                             if not fail:
                                 fail_time = frame_count
                                 frames_computed_per_second = ceil(100*frame_count/total_exec_time)/100
                             fail = True
-                            drawText(frame, "Tracking failure detected", (100,90), (0,0,255))
+                            drawText(model_frame, "Tracking failure detected", (100,90), (0,0,255))
 
                         # Display tracker type on frame
-                        drawText(frame, "Tracker " + tracker_type, (100,40))
+                        drawText(model_frame, "Tracker " + tracker_type, (100,40))
                         
                         # Display FPS on frame
                         frame_count += 1
                         total_exec_time += exec_time
-                        drawText(frame, "Frames computed per s : " + str(ceil(100*frame_count/total_exec_time)/100), (100,70))
-
-                        # Uncomment to display result
-                        #cv2.imshow("Tracking", frame)
+                        drawText(model_frame, "Frames computed per s : " + str(ceil(100*frame_count/total_exec_time)/100), (100,70))
                         
                         # Register frame results
-                        video_out.write(frame)
+                        video_out.write(model_frame)
 
                         # Exit if ESC pressed
                         k = cv2.waitKey(1) & 0xff
                         if k == 27 : break
 
-                    video.release()
                     video_out.release()
+                    video.release()
+                    model_video_out.release()
+                    
+                    # Update model from next video output
+                    model_video_out_file = output_folder+video_output_file_name+video_output_file_extension
                     
                     if not fail:
                         frames_computed_per_second = ceil(100*frame_count/total_exec_time)/100
