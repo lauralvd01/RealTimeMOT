@@ -24,7 +24,7 @@ if __name__ == '__main__' :
 
     # Select the type of the videos
     videos_folder = "inputVideos/"
-    videos_type = "bateau"
+    videos_type = "velo"
     videos = [name for name in os.listdir('./'+videos_folder+videos_type)]
     
     # Iterate on the video files present in the folder

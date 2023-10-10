@@ -33,7 +33,7 @@ def drawRectangle(frame, bbox,color):
     p2 = (int(bbox[0] + bbox[2]), int(bbox[1] + bbox[3]))
     cv2.rectangle(frame, p1, p2, color, 2, 1)
 
-def drawText(frame, txt, location, color=(110, 170, 50)):
+def drawText(frame, txt, location, color=(250, 50, 95)):
     font = cv2.FONT_HERSHEY_SIMPLEX
     fontScale = 1
     thickness = 3
@@ -59,7 +59,7 @@ def verifBbox(bbox,min_x,max_x,min_y,max_y,min_width,max_width,min_height,max_he
 if __name__ == '__main__' :
 
     tracker_types = ['MIL', 'KCF', 'MOSSE', 'CSRT', 'BOOSTING', 'TLD', 'MEDIANFLOW', 'GOTURN']
-    video_types = ['bateau']
+    video_types = ['bateau','velo']
     
     num_test = 1
     for tracker_type in tracker_types :
@@ -188,15 +188,18 @@ if __name__ == '__main__' :
                                 fail_time = frame_count
                                 frames_computed_per_second = ceil(100*frame_count/total_exec_time)/100
                             fail = True
-                            drawText(model_frame, "Tracking failure detected", (100,90), (0,0,255))
+                            drawText(model_frame, "Tracking failure", (280,70), (0,0,255))
 
                         # Display tracker type on frame
                         drawText(model_frame, "Tracker " + tracker_type, (100,40))
                         
+                        # Display number of target
+                        drawText(model_frame, "Target " + str(num_cible+1), (100,70), colors[num_cible] if ok else (0,0,255))
+                        
                         # Display FPS on frame
                         frame_count += 1
                         total_exec_time += exec_time
-                        drawText(model_frame, "Frames computed per s : " + str(ceil(100*frame_count/total_exec_time)/100), (100,70))
+                        drawText(model_frame, "Frames computed per s : " + str(ceil(100*frame_count/total_exec_time)/100), (100,120))
                         
                         # Register frame results
                         video_out.write(model_frame)
