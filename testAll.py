@@ -196,7 +196,7 @@ if __name__ == '__main__' :
                             # Display FPS on frame
                             frame_count += 1
                             total_exec_time += exec_time
-                            drawText(model_frame, "FCS : " + str(ceil(100*frame_count/total_exec_time)/100), (200,50*(num_cible+1)))
+                            drawText(model_frame, "FCS : " + str(ceil(100*frame_count/total_exec_time)/100), (300,50*(num_cible+1)), colors[num_cible])
                         else :
                             # Tracking failure
                             if not fail:
@@ -204,7 +204,7 @@ if __name__ == '__main__' :
                                 frames_computed_per_second = ceil(100*frame_count/total_exec_time)/100
                             fail = True
                             drawText(model_frame, "Target " + str(num_cible+1), (100,50*(num_cible+1)), (0,0,255))
-                            drawText(model_frame, "Tracking failure", (200,50*(num_cible+1)), (0,0,255))
+                            drawText(model_frame, "Tracking failure", (300,50*(num_cible+1)), (0,0,255))
 
                         # Display tracker type on frame
                         drawText(model_frame, "Tracker " + tracker_type, (width-200,40))
