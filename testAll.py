@@ -58,7 +58,7 @@ def verifBbox(bbox,min_x,max_x,min_y,max_y,min_width,max_width,min_height,max_he
 if __name__ == '__main__' :
 
     tracker_types = ['MIL', 'KCF', 'MOSSE', 'CSRT', 'BOOSTING', 'TLD', 'MEDIANFLOW', 'GOTURN']
-    video_types = ['bateau','velo']
+    video_types = ['bateau']
     
     num_test = 1
     for tracker_type in tracker_types :
@@ -78,6 +78,10 @@ if __name__ == '__main__' :
                 # Read data file
                 data_folder = 'dataFiles/init/' + video_type + '/'
                 targets_data = pandas.read_excel('./'+data_folder+video_input_file_name+'.xlsx')
+                N = len(targets_data)
+                
+                # Create results data file
+                data = {"Test":[num_test+i for i in range(N)],"Type de video":[video_type for i in range(N)], "Point teste":[None for i in range(N)], "Tracker":[tracker_type for i in range(N)], "Input":[video_input_file_name+video_input_file_extension for i in range(N)], "Output":["-1" for i in range(N)], "FPS":[-1.00 for i in range(N)], "Total frames":[-1 for i in range(N)], "Initialisation":["-1" for i in range(N)], "Initialisation scale":["-1" for i in range(N)], "Frames Computed per Second":[-1], "Objet cache":[None for i in range(N)], "Frame before":[None for i in range(N)], "Tracking Failure":[None for i in range(N)], "Frames before":[None for i in range(N)]}
                 
                 for num_cible in range(len(targets_data)) :
                     
@@ -146,18 +150,16 @@ if __name__ == '__main__' :
                         ok, frame = video.read()
                         if not ok:
                             break
-                        frame_count += 1
                         
                         # Start timer
                         timer = cv2.getTickCount()
 
                         # Update tracker
                         ok, bbox = tracker.update(frame)
-
-                        # Calculate execution time
-                        exec_time = (cv2.getTickCount() - timer) / tick_freq
-                        total_exec_time += exec_time
                         
+                        # Calculate execution time
+                        exec_time = max((cv2.getTickCount() - timer) / tick_freq,0)
+
                         # Draw bounding box
                         if ok and verifBbox(bbox,0,width,0,height,0,width,0,height):
                             # Tracking success and bbox in the image
@@ -166,15 +168,17 @@ if __name__ == '__main__' :
                             # Tracking failure
                             if not fail:
                                 fail_time = frame_count
-                                frames_computed_per_second = ceil(10*(frame_count-1)/(total_exec_time-exec_time))/10
+                                frames_computed_per_second = ceil(100*frame_count/total_exec_time)/100
                             fail = True
                             drawText(frame, "Tracking failure detected", (100,90), (0,0,255))
 
                         # Display tracker type on frame
                         drawText(frame, "Tracker " + tracker_type, (100,40))
-                    
+                        
                         # Display FPS on frame
-                        drawText(frame, "Frames computed per s : " + str(ceil(10*frame_count/total_exec_time)/10), (100,70))
+                        frame_count += 1
+                        total_exec_time += exec_time
+                        drawText(frame, "Frames computed per s : " + str(ceil(100*frame_count/total_exec_time)/100), (100,70))
 
                         # Uncomment to display result
                         #cv2.imshow("Tracking", frame)
@@ -190,12 +194,23 @@ if __name__ == '__main__' :
                     video_out.release()
                     
                     if not fail:
-                        frames_computed_per_second = ceil(10*frame_count/total_exec_time)/10
-
-                    # Register data
-                    data_folder = 'dataFiles/test/' + video_type + '/'
-                    data = pandas.DataFrame({"Test":[num_test],"Type de video":[video_type], "Point teste":[" "], "Tracker":[tracker_type], "Input":[video_input_file_name+video_input_file_extension], "Output":[video_output_file_name+video_output_file_extension], "FPS":[fps], "Total frames":[total_frame], "Initialisation":[video_type+" "+str(num_cible+1)], "Initialisation scale":[str(bbox_init)], "Frames Computed per Second":[frames_computed_per_second], "Objet cache":[" "], "Frame before":[" "], "Tracking Failure":[fail], "Frames before":[fail_time if fail else " "]})
-                    print(data)
-                    data.to_excel(data_folder+video_output_file_name+'.xlsx', sheet_name='data',index=[0])
-
+                        frames_computed_per_second = ceil(100*frame_count/total_exec_time)/100
+                    
+                    assert num_test == data['Test'][num_cible]  
+                    data['Output'][num_cible] = video_output_file_name + video_output_file_extension
+                    data['FPS'][num_cible] = fps
+                    data['Total frames'][num_cible] = total_frame
+                    data['Initialisation'][num_cible] = video_type + " " + str(num_cible+1)
+                    data['Initialisation scale'][num_cible] = str(bbox_init)
+                    data['Frames Computed per Second'][num_cible] = frames_computed_per_second
+                    data['Tracking Failure'][num_cible] = fail
+                    if fail :
+                        data['Frames before'][num_cible] = fail_time
+                    
                     num_test += 1
+
+                # Register data
+                data_folder = 'dataFiles/test/' + video_type + '/'
+                data_frame = pandas.DataFrame(data,index=[i for i in range(N)])
+                print(data_frame)
+                data_frame.to_excel(data_folder+video_input_file_name + '_' + tracker_type+'.xlsx', sheet_name='data',index=[i for i in range(N)])
