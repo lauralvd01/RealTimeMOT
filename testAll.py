@@ -196,12 +196,16 @@ if __name__ == '__main__' :
                             # Display FPS on frame
                             frame_count += 1
                             total_exec_time += exec_time
-                            drawText(model_frame, "FCS : " + str(ceil(100*frame_count/total_exec_time)/100), (300,50*(num_cible+1)), colors[num_cible])
+                            if total_exec_time > 0 :
+                                drawText(model_frame, "FCS : " + str(ceil(100*frame_count/total_exec_time)/100), (300,50*(num_cible+1)), colors[num_cible])
                         else :
                             # Tracking failure
                             if not fail:
                                 fail_time = frame_count
-                                frames_computed_per_second = ceil(100*frame_count/total_exec_time)/100
+                                if total_exec_time > 0 :
+                                    frames_computed_per_second = ceil(100*frame_count/total_exec_time)/100
+                                else :
+                                    frames_computed_per_second = 0
                             fail = True
                             drawText(model_frame, "Target " + str(num_cible+1), (100,50*(num_cible+1)), (0,0,255))
                             drawText(model_frame, "Tracking failure", (300,50*(num_cible+1)), (0,0,255))
@@ -224,7 +228,10 @@ if __name__ == '__main__' :
                     model_video_out_file = output_folder+video_output_file_name+video_output_file_extension
                     
                     if not fail:
-                        frames_computed_per_second = ceil(100*frame_count/total_exec_time)/100
+                        if total_exec_time > 0 :
+                            frames_computed_per_second = ceil(100*frame_count/total_exec_time)/100
+                        else :
+                            frames_computed_per_second = 0
                     
                     assert num_test == data['Test'][num_cible]  
                     data['Output'][num_cible] = video_output_file_name + video_output_file_extension
