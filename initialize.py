@@ -63,7 +63,7 @@ if __name__ == '__main__' :
             targets.append(str(bbox))
         
         # Register targets in an Excel file
-        data_folder = "dataFiles/init/"
+        data_folder = "dataFiles/init/" + videos_type + "/"
         data = pandas.DataFrame({"Bbox":targets})
         data.to_excel(data_folder+video_file_name+'.xlsx',sheet_name = 'targets', index= [i+1 for i in range(len(targets))])
         

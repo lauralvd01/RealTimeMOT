@@ -72,15 +72,16 @@ if __name__ == '__main__' :
                 # Choose video
                 parts = video_input_file.split('.')
                 video_input_file_name = parts[0]
-                video_input_file_extension = parts[1]
+                video_input_file_extension = '.' + parts[1]
                 
                 # Read data file
-                data_folder = 'dataFiles/' + video_type + '/'
+                data_folder = 'dataFiles/init/' + video_type + '/'
                 targets_data = pandas.read_excel('./'+data_folder+video_input_file_name+'.xlsx')
                 
                 for num_cible in range(len(targets_data)) :
                     
                     # Read video
+                    print(input_folder+video_input_file_name+video_input_file_extension)
                     video = cv2.VideoCapture(input_folder+video_input_file_name+video_input_file_extension)
 
                     # Exit if video is not opened
@@ -96,11 +97,11 @@ if __name__ == '__main__' :
                     # Read bbox_init
                     bbox_str = targets_data.iat[num_cible,1].split(',')
                     x = bbox_str[0]
-                    x = x[1:len(x)]
-                    y = bbox_str[1]
-                    w = bbox_str[2]
+                    x = int(x[1:len(x)])
+                    y = int(bbox_str[1])
+                    w = int(bbox_str[2])
                     h = bbox_str[3]
-                    h = h[1:len(h)]
+                    h = int(h[0:-1])
                     bbox_init = (x,y,w,h)
                     print(bbox_init)
                     
@@ -123,7 +124,6 @@ if __name__ == '__main__' :
     
                     # Draw bounding box
                     if ok and verifBbox(bbox_init,0,width,0,height,0,width,0,height):
-                        bbox_init = str(bbox_init)
                         drawRectangle(frame,bbox_init)
 
                     # Initialize tracker with first frame and bounding box
