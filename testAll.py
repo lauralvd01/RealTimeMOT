@@ -2,6 +2,7 @@ import cv2
 import sys
 import os
 import pandas
+from math import ceil
 
 (major_ver, minor_ver, subminor_ver) = (cv2.__version__).split('.')
 
@@ -165,7 +166,7 @@ if __name__ == '__main__' :
                             # Tracking failure
                             if not fail:
                                 fail_time = frame_count
-                                frames_computed_per_second = int((frame_count-1)/(total_exec_time-exec_time))
+                                frames_computed_per_second = ceil(10*(frame_count-1)/(total_exec_time-exec_time))/10
                             fail = True
                             drawText(frame, "Tracking failure detected", (100,90), (0,0,255))
 
@@ -173,7 +174,7 @@ if __name__ == '__main__' :
                         drawText(frame, "Tracker " + tracker_type, (100,40))
                     
                         # Display FPS on frame
-                        drawText(frame, "Frames computed per s : " + str(int(frame_count/total_exec_time)), (100,70))
+                        drawText(frame, "Frames computed per s : " + str(ceil(10*frame_count/total_exec_time)/10), (100,70))
 
                         # Uncomment to display result
                         #cv2.imshow("Tracking", frame)
@@ -189,7 +190,7 @@ if __name__ == '__main__' :
                     video_out.release()
                     
                     if not fail:
-                        frames_computed_per_second = int(frame_count/total_exec_time)
+                        frames_computed_per_second = ceil(10*frame_count/total_exec_time)/10
 
                     # Register data
                     data_folder = 'dataFiles/test/' + video_type + '/'
