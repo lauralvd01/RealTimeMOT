@@ -147,6 +147,13 @@ if __name__ == '__main__' :
                     # Draw bounding box
                     if ok and model_ok and verifBbox(bbox_init,0,width,0,height,0,width,0,height):
                         drawRectangle(model_frame,bbox_init,colors[num_cible])
+                        
+                        # Display tracker type on frame
+                        drawText(model_frame, "Tracker " + tracker_type, (width-200,40))
+                            
+                        # Display number of target
+                        drawText(model_frame, "Target " + str(num_cible+1), (100,70*(num_cible+1)), colors[num_cible])
+                    
 
                     # Initialize tracker with first frame and bounding box
                     tracker = createTracker(tracker_type)
@@ -181,25 +188,26 @@ if __name__ == '__main__' :
                         # Draw bounding box
                         if ok and model_ok and verifBbox(bbox,0,width,0,height,0,width,0,height):
                             # Tracking success and bbox in the image
-                            drawRectangle(model_frame,bbox,colors[num_cible]) 
+                            drawRectangle(model_frame,bbox,colors[num_cible])
+                                
+                            # Display number of target
+                            drawText(model_frame, "Target " + str(num_cible+1), (100,50*(num_cible+1)), colors[num_cible])
+                            
+                            # Display FPS on frame
+                            frame_count += 1
+                            total_exec_time += exec_time
+                            drawText(model_frame, "FCS : " + str(ceil(100*frame_count/total_exec_time)/100), (200,50*(num_cible+1)))
                         else :
                             # Tracking failure
                             if not fail:
                                 fail_time = frame_count
                                 frames_computed_per_second = ceil(100*frame_count/total_exec_time)/100
                             fail = True
-                            drawText(model_frame, "Tracking failure", (280,70), (0,0,255))
+                            drawText(model_frame, "Target " + str(num_cible+1), (100,50*(num_cible+1)), (0,0,255))
+                            drawText(model_frame, "Tracking failure", (200,50*(num_cible+1)), (0,0,255))
 
                         # Display tracker type on frame
-                        drawText(model_frame, "Tracker " + tracker_type, (100,40))
-                        
-                        # Display number of target
-                        drawText(model_frame, "Target " + str(num_cible+1), (100,70), colors[num_cible] if ok else (0,0,255))
-                        
-                        # Display FPS on frame
-                        frame_count += 1
-                        total_exec_time += exec_time
-                        drawText(model_frame, "Frames computed per s : " + str(ceil(100*frame_count/total_exec_time)/100), (100,120))
+                        drawText(model_frame, "Tracker " + tracker_type, (width-200,40))
                         
                         # Register frame results
                         video_out.write(model_frame)
