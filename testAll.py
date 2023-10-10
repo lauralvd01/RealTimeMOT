@@ -3,6 +3,7 @@ import sys
 import os
 import pandas
 from math import ceil
+import random
 
 (major_ver, minor_ver, subminor_ver) = (cv2.__version__).split('.')
 
@@ -80,8 +81,11 @@ if __name__ == '__main__' :
                 targets_data = pandas.read_excel('./'+data_folder+video_input_file_name+'.xlsx')
                 N = len(targets_data)
                 
+                # Assign 1 color to each target
+                colors = [(random.randint(0,255),random.randint(0,255),random.randint(0,255)) for i in range(N)]
+                
                 # Create results data file
-                data = {"Test":[num_test+i for i in range(N)],"Type de video":[video_type for i in range(N)], "Point teste":[None for i in range(N)], "Tracker":[tracker_type for i in range(N)], "Input":[video_input_file_name+video_input_file_extension for i in range(N)], "Output":["-1" for i in range(N)], "FPS":[-1.00 for i in range(N)], "Total frames":[-1 for i in range(N)], "Initialisation":["-1" for i in range(N)], "Initialisation scale":["-1" for i in range(N)], "Frames Computed per Second":[-1], "Objet cache":[None for i in range(N)], "Frame before":[None for i in range(N)], "Tracking Failure":[None for i in range(N)], "Frames before":[None for i in range(N)]}
+                data = {"Test":[num_test+i for i in range(N)],"Type de video":[video_type for i in range(N)], "Point teste":[None for i in range(N)], "Tracker":[tracker_type for i in range(N)], "Input":[video_input_file_name+video_input_file_extension for i in range(N)], "Output":["-1" for i in range(N)], "FPS":[-1.00 for i in range(N)], "Total frames":[-1 for i in range(N)], "Initialisation":["-1" for i in range(N)], "Initialisation scale":["-1" for i in range(N)],"Color":colors, "Frames Computed per Second":[-1 for i in range(N)], "Objet cache":[None for i in range(N)], "Frame before":[None for i in range(N)], "Tracking Failure":[None for i in range(N)], "Frames before":[None for i in range(N)]}
                 
                 for num_cible in range(len(targets_data)) :
                     
