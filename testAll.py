@@ -58,7 +58,7 @@ def verifBbox(bbox,min_x,max_x,min_y,max_y,min_width,max_width,min_height,max_he
 
 if __name__ == '__main__' :
 
-    tracker_types = ['MIL', 'KCF', 'MOSSE', 'CSRT', 'BOOSTING', 'TLD', 'MEDIANFLOW', 'GOTURN']
+    tracker_types = ['MIL', 'KCF', 'MOSSE', 'CSRT', 'BOOSTING', 'TLD', 'MEDIANFLOW']
     video_types = ['bateau','velo']
     
     num_test = 1
