@@ -39,7 +39,7 @@ if __name__ == '__main__' :
     # Instead of MIL, you can also use
 
     tracker_types = ['BOOSTING', 'MIL','KCF', 'TLD', 'MEDIANFLOW', 'GOTURN', 'MOSSE', 'CSRT']
-    tracker_type = tracker_types[6]
+    tracker_type = tracker_types[1]
 
     if int(minor_ver) < 3:
         tracker = cv2.Tracker_create(tracker_type)
@@ -62,7 +62,7 @@ if __name__ == '__main__' :
             tracker = cv2.legacy.TrackerCSRT_create()
 
     # Read video
-    input_folder = "inputVideos/"
+    input_folder = "inputVideos/bateau/"
     video_input_file_name = "bateau_1"
     video_input_file_extension = ".mp4"
     video = cv2.VideoCapture(input_folder+video_input_file_name+video_input_file_extension)
@@ -98,7 +98,7 @@ if __name__ == '__main__' :
     bbox = (421, 501, 118, 184)
     
     # Uncomment the line below to select a different bounding box
-    #bbox = cv2.selectROI(frame, False)
+    bbox = cv2.selectROI(frame, False)
     
     # Draw bounding box
     if ok and verifBbox(bbox,0,width,0,height,0,width,0,height):
