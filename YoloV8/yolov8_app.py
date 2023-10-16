@@ -31,6 +31,28 @@ def box_label(image, box, label='', color=(128, 128, 128), txt_color=(255, 255, 
                 txt_color,
                 thickness=tf,
                 lineType=cv2.LINE_AA)
+
+def formatMOT(frame,box) :
+  bbMOT = "{}".format(int(frame))
+  bbMOT = bbMOT + ",-1,"
+
+  x = round(float(box[0]),2)
+  bbMOT = bbMOT + "{},".format(float(x))
+
+  y = round(float(box[1]),2)
+  bbMOT = bbMOT + "{},".format(float(y))
+
+  width = round(abs(float(box[2]-box[0])),2)
+  bbMOT = bbMOT + "{},".format(float(width))
+
+  height = round(abs(float(box[3]-box[1])),2)
+  bbMOT = bbMOT + "{},".format(float(height))
+
+  score = round(100 * float(box[-2]),1)
+  bbMOT = bbMOT + "{},-1,-1".format(float(score))
+  
+  return bbMOT
+
     
 
 ## Création de seqinfo.ini
