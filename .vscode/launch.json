@@ -20,7 +20,8 @@
                 "--min_detection_height", "0",
                 "--max_cosine_distance", "0.2",
                 "--nn_budget","100",
-                "--display","False"]
+                "--display","True",
+                "--video_filename","./DeepSORT/deep_sort-master/deep_sort/output/MOT16-06.avi"]
         }
     ]
 }
