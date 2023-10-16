@@ -132,6 +132,12 @@ seq.close()
 
 # Détections
 writer = None
+i = 0
+tot = total
+while tot > 0 :
+  tot = tot//10
+  i += 1
+zeros = "0"*i
 
 acc = 0
 while acc < total :
@@ -139,6 +145,8 @@ while acc < total :
 
   if grabbed:
     acc +=1
+    # save blank frame in images folder
+    cv2.imwrite("./RealTimeMOT/YoloV8/bateau_1/img1/"+zeros[:i-len(str(acc))]+str(acc)+".jpg", frame)
 
     # predict bounding boxes on frame
     results = model.predict(frame, verbose=False)
@@ -159,12 +167,12 @@ while acc < total :
           det.write("\n")
           det.close()
           
-    writer = None
     # save frame in video writer
     if writer is None:
       fourcc = cv2.VideoWriter_fourcc(*"MJPG")
       writer = cv2.VideoWriter('./RealTimeMOT/YoloV8/output/detections_bateau_1.avi', fourcc=fourcc, fps=fps,
       frameSize=(frame.shape[1], frame.shape[0]), isColor=True)
+    
 
   writer.write(frame)
 writer.release()

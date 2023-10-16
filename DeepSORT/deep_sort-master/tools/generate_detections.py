@@ -55,7 +55,7 @@ def extract_image_patch(image, bbox, patch_shape):
 
     # convert to top left, bottom right
     bbox[2:] += bbox[:2]
-    bbox = bbox.astype(np.int)
+    bbox = bbox.astype(int)
 
     # clip at image boundaries
     bbox[:2] = np.maximum(0, bbox[:2])
@@ -72,15 +72,15 @@ class ImageEncoder(object):
 
     def __init__(self, checkpoint_filename, input_name="images",
                  output_name="features"):
-        self.session = tf.Session()
-        with tf.gfile.GFile(checkpoint_filename, "rb") as file_handle:
-            graph_def = tf.GraphDef()
+        self.session = tf.compat.v1.Session()
+        with tf.io.gfile.GFile(checkpoint_filename, "rb") as file_handle:
+            graph_def = tf.compat.v1.GraphDef()
             graph_def.ParseFromString(file_handle.read())
         tf.import_graph_def(graph_def, name="net")
-        self.input_var = tf.get_default_graph().get_tensor_by_name(
-            "net/%s:0" % input_name)
-        self.output_var = tf.get_default_graph().get_tensor_by_name(
-            "net/%s:0" % output_name)
+        self.input_var = tf.compat.v1.get_default_graph().get_tensor_by_name(
+            "%s:0" % input_name)
+        self.output_var = tf.compat.v1.get_default_graph().get_tensor_by_name(
+            "%s:0" % output_name)
 
         assert len(self.output_var.get_shape()) == 2
         assert len(self.input_var.get_shape()) == 4
@@ -145,40 +145,33 @@ def generate_detections(encoder, mot_dir, output_dir, detection_dir=None):
             raise ValueError(
                 "Failed to created output directory '%s'" % output_dir)
 
-    for sequence in os.listdir(mot_dir):
-        print("Processing %s" % sequence)
-        sequence_dir = os.path.join(mot_dir, sequence)
+    image_dir = mot_dir + "/" + "img1"
+    image_filenames = {
+        int(os.path.splitext(f)[0]): os.path.join(image_dir, f) for f in os.listdir(image_dir)}
 
-        image_dir = os.path.join(sequence_dir, "img1")
-        image_filenames = {
-            int(os.path.splitext(f)[0]): os.path.join(image_dir, f)
-            for f in os.listdir(image_dir)}
+    detection_file = detection_dir + "/" + "det.txt"
+    detections_in = np.loadtxt(detection_file, delimiter=',')
+    detections_out = []
 
-        detection_file = os.path.join(
-            detection_dir, sequence, "det/det.txt")
-        detections_in = np.loadtxt(detection_file, delimiter=',')
-        detections_out = []
+    frame_indices = detections_in[:, 0].astype(int)
+    min_frame_idx = frame_indices.astype(int).min()
+    max_frame_idx = frame_indices.astype(int).max()
+    for frame_idx in range(min_frame_idx, max_frame_idx + 1):
+        print("Frame %05d/%05d" % (frame_idx, max_frame_idx))
+        mask = frame_indices == frame_idx
+        rows = detections_in[mask]
 
-        frame_indices = detections_in[:, 0].astype(np.int)
-        min_frame_idx = frame_indices.astype(np.int).min()
-        max_frame_idx = frame_indices.astype(np.int).max()
-        for frame_idx in range(min_frame_idx, max_frame_idx + 1):
-            print("Frame %05d/%05d" % (frame_idx, max_frame_idx))
-            mask = frame_indices == frame_idx
-            rows = detections_in[mask]
+        if frame_idx not in image_filenames:
+            print("WARNING could not find image for frame %d" % frame_idx)
+            continue
+        bgr_image = cv2.imread(image_filenames[frame_idx], cv2.IMREAD_COLOR)
+        features = encoder(bgr_image, rows[:, 2:6].copy())
+        detections_out += [np.r_[(row, feature)] for row, feature
+                           in zip(rows, features)]
 
-            if frame_idx not in image_filenames:
-                print("WARNING could not find image for frame %d" % frame_idx)
-                continue
-            bgr_image = cv2.imread(
-                image_filenames[frame_idx], cv2.IMREAD_COLOR)
-            features = encoder(bgr_image, rows[:, 2:6].copy())
-            detections_out += [np.r_[(row, feature)] for row, feature
-                               in zip(rows, features)]
-
-        output_filename = os.path.join(output_dir, "%s.npy" % sequence)
-        np.save(
-            output_filename, np.asarray(detections_out), allow_pickle=False)
+    output_filename = output_dir+"/detections.npy"
+    np.save(
+        output_filename, np.asarray(detections_out), allow_pickle=False)
 
 
 def parse_args():
@@ -198,7 +191,7 @@ def parse_args():
         "MOTChallenge structure: [sequence]/det/det.txt", default=None)
     parser.add_argument(
         "--output_dir", help="Output directory. Will be created if it does not"
-        " exist.", default="detections")
+        " exist.", default="detections") 
     return parser.parse_args()
 
 

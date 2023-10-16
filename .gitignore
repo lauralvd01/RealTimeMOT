@@ -1,5 +1,6 @@
 /OpenCVTrackers/outputVideos
 
-/DeepSORT/resources
+/DeepSORT/deep_sort-master/resources
 
 /YoloV8/output
+/YoloV8/bateau_1/img1
