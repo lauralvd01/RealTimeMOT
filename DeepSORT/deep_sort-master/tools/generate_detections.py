@@ -147,7 +147,7 @@ def generate_detections(encoder, mot_dir, output_dir, detection_dir=None):
 
     image_dir = mot_dir + "/" + "img1"
     image_filenames = {
-        int(os.path.splitext(f)[0]): os.path.join(image_dir, f) for f in os.listdir(image_dir)}
+        int(os.path.splitext(f)[0]): image_dir + "/" + f for f in os.listdir(image_dir)}
 
     detection_file = detection_dir + "/" + "det.txt"
     detections_in = np.loadtxt(detection_file, delimiter=',')

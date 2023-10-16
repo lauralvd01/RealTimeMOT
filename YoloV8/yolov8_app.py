@@ -157,7 +157,7 @@ while acc < total :
       label = LABELS[int(box[-1])+1]
       if box[-2] > CONF_TRESHOLD:
           color = COLORS[int(box[-1])]
-          #box_label(frame, box, label, color)
+          box_label(frame, box, label, color)
 
           # save detection in det.txt
           det = open("./RealTimeMOT/YoloV8/bateau_1/det/det.txt","a")

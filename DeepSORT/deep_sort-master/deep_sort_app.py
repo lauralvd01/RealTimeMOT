@@ -41,11 +41,9 @@ def gather_sequence_info(sequence_dir, detection_file):
         * max_frame_idx: Index of the last frame.
 
     """
-    image_dir = os.path.join(sequence_dir, "img1")
-    image_filenames = {
-        int(os.path.splitext(f)[0]): os.path.join(image_dir, f)
-        for f in os.listdir(image_dir)}
-    groundtruth_file = os.path.join(sequence_dir, "gt/gt.txt")
+    image_dir = sequence_dir + "/" + "img1"
+    image_filenames = { int(os.path.splitext(f)[0]): image_dir + "/" + f for f in os.listdir(image_dir)}
+    groundtruth_file = sequence_dir + "/" + "gt/gt.txt"
 
     detections = None
     if detection_file is not None:
@@ -68,14 +66,14 @@ def gather_sequence_info(sequence_dir, detection_file):
         min_frame_idx = int(detections[:, 0].min())
         max_frame_idx = int(detections[:, 0].max())
 
-    info_filename = os.path.join(sequence_dir, "seqinfo.ini")
+    info_filename = sequence_dir + "/" + "seqinfo.ini"
     if os.path.exists(info_filename):
         with open(info_filename, "r") as f:
             line_splits = [l.split('=') for l in f.read().splitlines()[1:]]
             info_dict = dict(
                 s for s in line_splits if isinstance(s, list) and len(s) == 2)
 
-        update_ms = 1000 / int(info_dict["frameRate"])
+        update_ms = 1000 / float(info_dict["frameRate"])
     else:
         update_ms = None
 
