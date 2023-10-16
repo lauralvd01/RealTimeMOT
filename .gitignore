@@ -1,4 +1,5 @@
-/OpenCVTrackers/inputVideos
 /OpenCVTrackers/outputVideos
 
 /DeepSORT/resources
+
+/YoloV8/output
