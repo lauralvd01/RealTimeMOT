@@ -65,7 +65,7 @@ if __name__ == '__main__' :
     for tracker_type in tracker_types :
         for video_type in video_types :
             
-            input_folder = 'inputVideos/' + video_type + '/'
+            input_folder = './inputVideos/' + video_type + '/'
             video_input_files = [name for name in os.listdir('./'+input_folder)]
             print(video_input_files)
             
@@ -77,7 +77,7 @@ if __name__ == '__main__' :
                 video_input_file_extension = '.' + parts[1]
                 
                 # Read data file
-                data_folder = 'dataFiles/init/' + video_type + '/'
+                data_folder = './RealTimeMOT/OpenCVTracvkers/dataFiles/init/' + video_type + '/'
                 targets_data = pandas.read_excel('./'+data_folder+video_input_file_name+'.xlsx')
                 N = len(targets_data)
                 
@@ -118,7 +118,7 @@ if __name__ == '__main__' :
                     print(bbox_init)
                     
                     # Create output video
-                    output_folder = 'outputVideos/' + video_type + '/'
+                    output_folder = './RealTimeMOT/OpenCVTrackers/outputVideos/' + video_type + '/'
                     video_output_file_name = video_input_file_name + '_' + tracker_type + '_' + str(num_cible + 1)
                     video_output_file_extension = ".avi"
                     video_out = cv2.VideoWriter(output_folder+video_output_file_name+video_output_file_extension, cv2.VideoWriter_fourcc(*"XVID"), fps, (width, height))
@@ -247,7 +247,7 @@ if __name__ == '__main__' :
                     num_test += 1
 
                 # Register data
-                data_folder = 'dataFiles/test/' + video_type + '/'
+                data_folder = './RealTimeMOT/OpenCVTrackers/dataFiles/test/' + video_type + '/'
                 data_frame = pandas.DataFrame(data,index=[i for i in range(N)])
                 print(data_frame)
                 data_frame.to_excel(data_folder+video_input_file_name + '_' + tracker_type+'.xlsx', sheet_name='data',index=[i for i in range(N)])

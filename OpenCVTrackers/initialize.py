@@ -23,7 +23,7 @@ def verifBbox(bbox,min_x=0,max_x=1,min_y=0,max_y=1,min_width=0,max_width=1,min_h
 if __name__ == '__main__' :
 
     # Select the type of the videos
-    videos_folder = "inputVideos/"
+    videos_folder = "./inputVideos/"
     videos_type = "velo"
     videos = [name for name in os.listdir('./'+videos_folder+videos_type)]
     
@@ -63,7 +63,7 @@ if __name__ == '__main__' :
             targets.append(str(bbox))
         
         # Register targets in an Excel file
-        data_folder = "dataFiles/init/" + videos_type + "/"
+        data_folder = "./RealTimeMOT/OpenCVTrackers/dataFiles/init/" + videos_type + "/"
         data = pandas.DataFrame({"Bbox":targets})
         data.to_excel(data_folder+video_file_name+'.xlsx',sheet_name = 'targets', index= [i+1 for i in range(len(targets))])
         

@@ -62,7 +62,7 @@ if __name__ == '__main__' :
             tracker = cv2.legacy.TrackerCSRT_create()
 
     # Read video
-    input_folder = "inputVideos/bateau/"
+    input_folder = "./inputVideos/bateau/"
     video_input_file_name = "bateau_1"
     video_input_file_extension = ".mp4"
     video = cv2.VideoCapture(input_folder+video_input_file_name+video_input_file_extension)
@@ -78,7 +78,7 @@ if __name__ == '__main__' :
         total_frame = int(video.get(cv2.CAP_PROP_FRAME_COUNT))
     
     # Create output video
-    output_folder = "outputVideos/"
+    output_folder = "./RealTimeMOT/OpenCVTrackers/outputVideos/"
     video_output_file_name = video_input_file_name + "_" + tracker_type
     video_output_extension = ".avi"
     video_out = cv2.VideoWriter(output_folder+video_output_file_name+video_output_extension, cv2.VideoWriter_fourcc(*"XVID"), fps, (width, height))
@@ -172,7 +172,7 @@ print(total_frame)
 print(int(frames_computed_per_second))
 
 # Register data
-data_folder = "dataFiles/test/"
+data_folder = "./RealTimeMOT/OpenCVTracvkers/dataFiles/test/"
 data = pandas.DataFrame({"Type de video":[" "], "Point teste":[" "], "Tracker":[tracker_type], "Input":[video_input_file_name], "Output":[video_input_file_name+'_'+tracker_type], "FPS":[fps], "Total frames":[total_frame], "Initialisation":[" "], "Initialisation scale":[bbox_init], "Frames Computed per Second":[frames_computed_per_second], "Objet cache":[" "], "Frame before":[" "], "Tracking Failure":[fail], "Frames before":[fail_time if fail else " "]})
 data.to_excel(data_folder+video_input_file_name+'_'+tracker_type+'.xlsx', sheet_name='data',index=[1])
 
