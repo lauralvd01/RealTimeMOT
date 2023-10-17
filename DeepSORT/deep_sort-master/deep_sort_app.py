@@ -41,7 +41,7 @@ def gather_sequence_info(sequence_dir, detection_file):
 
     """
     image_dir = sequence_dir + "/" + "img1"
-    image_filenames = { int(os.path.splitext(f)[0]): image_dir + "/" + f for f in os.listdir(image_dir)}
+    image_filenames = { int(os.path.splitext(f)[0]): image_dir + "/" + f for f in  os.listdir(image_dir)}
     groundtruth_file = sequence_dir + "/" + "gt/gt.txt"
 
     detections = None
