@@ -31,11 +31,12 @@
                 "--display","True"
                 */
 
-                /// Generate_videos
+                /* Generate_videos
                 "--mot_dir","./RealTimeMOT/YoloV8/bateau_1",
                 "--result_file","./RealTimeMOT/DeepSORT/deep_sort-master/output/deep_sort_bateau_1.txt",
                 "--output_dir","./RealTimeMOT/DeepSORT/deep_sort-master/outputVideos",
                 "--convert_h264","False"
+                */
             ]
         }
     ]

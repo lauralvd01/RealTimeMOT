@@ -81,4 +81,28 @@ After you have initialized all the targets for all videos of each video type, us
 
 ## YoloV8
 
+> YOLOv8 is the latest version of the acclaimed real-time object detection and image segmentation model. YOLOv8 is built on cutting-edge advancements in deep learning and computer vision, offering unparalleled performance in terms of speed and accuracy.  
+[See more](https://docs.ultralytics.com/)  
+
+We use YOLOv8 as a multiple object detector, in order to rapidly identify the objects present in each frame. YOLOv8 is able to detect the objects (the objects on wich he was trained for) in a whole image without having to compute several times some parts of the image.
+
+The file `yolov8_app.py` allows to download the latest pretrained model of YOLOv8 (`yolov8n.pt`) and apply it to each frame of the video specified `"./inputVideos/bateau/bateau_1.mp4"`. On each frame, the detections computed by the model are filtered in order to keep the ones representing one of the `OBJECTS_OF_INTEREST` listed that have a confidence score higher than `100*CONF_TRESHOLD`. 
+
+The data for those detections is stored in `"./RealTimeMOT/YoloV8/bateau_3_0.1/det/det.txt"` in the [MOT format](https://motchallenge.net/instructions/) (1 detection per line) :  
+
+    {frame_number},-1,{location.left},{location.top},{width},{height},{score},-1,-1
+
+Moreover, to keep the MOT format, we store in a `{video_file_name}` folder a file `seqinfo.ini` that follows these directives :
+
+    [Sequence]
+    name={video_file_name}
+    imDir=img1
+    frameRate={fps}
+    seqLength={frame_count}
+    imWidth={frame_width}
+    imHeight={frame_height}
+    imExt=.jpg
+
+In a subfolder `{video_file_name}/det` will be stored the `det.txt` file containing the data for the filtered detections, and in an other subfolder `{video_file_name}/img1` will be stored each frame of the video, in `.jpg` format.
+
 ## DeepSORT
