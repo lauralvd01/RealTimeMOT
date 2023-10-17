@@ -1,0 +1,42 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [
+                /* Generate_detections
+                "--model","./RealTimeMOT/DeepSORT/deep_sort-master/networks/mars-small128.pb",
+                "--mot_dir","./RealTimeMOT/YoloV8/bateau_1",
+                "--detection_dir","./RealTimeMOT/YoloV8/bateau_1/det",
+                "--output_dir","./RealTimeMOT/YoloV8/bateau_1"
+                */
+
+                /* Deep_sort_app
+                "--sequence_dir","./RealTimeMOT/YoloV8/bateau_1",
+                "--detection_file","./RealTimeMOT/YoloV8/bateau_1/detections.npy",
+                "--output_file","./RealTimeMOT/DeepSORT/deep_sort-master/output/deep_sort_bateau_1.txt",
+                "--min_confidence","0.3",
+                "--nms_max_overlap","1.0",
+                "--min_detection_height", "0",
+                "--max_cosine_distance", "0.2",
+                "--nn_budget","100",
+                "--display","True"
+                */
+
+                /// Generate_videos
+                "--mot_dir","./RealTimeMOT/YoloV8/bateau_1",
+                "--result_file","./RealTimeMOT/DeepSORT/deep_sort-master/output/deep_sort_bateau_1.txt",
+                "--output_dir","./RealTimeMOT/DeepSORT/deep_sort-master/outputVideos",
+                "--convert_h264","False"
+            ]
+        }
+    ]
+}
