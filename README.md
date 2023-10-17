@@ -63,11 +63,17 @@ For the results folder, create the `./RealTimeMOT/OpenCVTrackers/outputVideos/` 
 
 ### 1 Tracker 1 Video 1 Target Test
 
-To test one tracker on one target on one video, use `test.py` : select the tracker within the list `tracker_types`, the input folder `"./inputVideos/{videos_type}/"` and the video name and extension. Run the file, select the target on the first frame and then press Enter, the output video will be in your `outputVideos` folder.
+To test one tracker on one target on one video, use `test.py` : select the tracker within the list `tracker_types`, the input folder `"./inputVideos/{videos_type}/"` and the video name and extension. 
+
+Run the file, select the target on the first frame and then press Enter, the output video will be in your `outputVideos` folder.
 
 ### Initialization of the targets
 
-Before testing all the trackers on all your videos, you have to specify the targets. For this use `initialize.py` : select the input folder `"./inputVideos/`, the subfolder corresponding to the type of the videos you want to initialize `"{videos_type}"` and run the file. You will select, on the first frame of each video, each target you want to track. Select the box of one target, press Enter, then you can select the next target. After you have selected the last target, double press Enter and you will continue with next video. If you select a target that is too small or outpass the limits of the frame, the target will not count and you'll pass to the next video. The results will be stored in the `"./RealTimeMOT/OpenCVTrackers/dataFiles/init/{videos_type}/"` folder.
+Before testing all the trackers on all your videos, you have to specify the targets. For this use `initialize.py` : select the input folder `"./inputVideos/`, the subfolder corresponding to the type of the videos you want to initialize `"{videos_type}"` and run the file. 
+
+You will select, on the first frame of each video, each target you want to track. Select the box of one target, press Enter, then you can select the next target. After you have selected the last target, double press Enter and you will continue with the next video. If you select a target that is too small or outpasses the limits of the frame, the target will not count and you'll pass to the next video. 
+
+The results will be stored in the `"./RealTimeMOT/OpenCVTrackers/dataFiles/init/{videos_type}/"` folder.
 
 ### Test each tracker on each target of each video
 
