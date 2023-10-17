@@ -1,3 +1,5 @@
+.vscode/launch.json
+
 /OpenCVTrackers/outputVideos
 
 /DeepSORT/deep_sort-master/outputVideos
