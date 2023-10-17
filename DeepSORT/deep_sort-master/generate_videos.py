@@ -40,12 +40,12 @@ if __name__ == "__main__":
 
     os.makedirs(args.output_dir, exist_ok=True)
     update_ms = args.update_ms
-    video_filename = args.output_dir + "/deep_sort_bateau_2_0.1.avi"
+    video_filename = args.output_dir + "/deep_sort_bateau_3_0.1.avi"
 
     print("Saving to %s." % (video_filename))
     show_results.run(args.mot_dir, args.result_file, False, None, update_ms, video_filename)
 
     if args.convert_h264:
         print(args.convert_h264)
-        filename_out = args.output_dir + "/deep_sort_bateau_2_0.1.mp4"
+        filename_out = args.output_dir + "/deep_sort_bateau_3_0.1.mp4"
         #convert(video_filename, filename_out)
