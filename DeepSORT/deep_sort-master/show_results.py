@@ -12,8 +12,8 @@ from application_util import visualization
 DEFAULT_UPDATE_MS = 20
 
 
-def run(sequence_dir, result_file, video_filename=None, show_false_alarms=False, detection_file=None,
-        update_ms=None):
+def run(sequence_dir, result_file, show_false_alarms=False, detection_file=None,
+        update_ms=None, video_filename=None):
     """Run tracking result visualization.
 
     Parameters
@@ -22,8 +22,6 @@ def run(sequence_dir, result_file, video_filename=None, show_false_alarms=False,
         Path to the MOTChallenge sequence directory.
     result_file : str
         Path to the tracking output file in MOTChallenge ground truth format.
-    video_filename : Optional[Str]
-        If not None, a video of the tracking results is written to this file.
     show_false_alarms : Optional[bool]
         If True, false alarms are highlighted as red boxes.
     detection_file : Optional[str]
@@ -32,6 +30,8 @@ def run(sequence_dir, result_file, video_filename=None, show_false_alarms=False,
         Number of milliseconds between cosecutive frames. Defaults to (a) the
         frame rate specifid in the seqinfo.ini file or DEFAULT_UDPATE_MS ms if
         seqinfo.ini is not available.
+    video_filename : Optional[Str]
+        If not None, a video of the tracking results is written to this file.
 
     """
     seq_info = deep_sort_app.gather_sequence_info(sequence_dir, detection_file)
@@ -98,7 +98,7 @@ def parse_args():
         "Defaults to the frame_rate specified in seqinfo.ini, if available.",
         default=None)
     parser.add_argument(
-        "--video_filename", help="Filename of the (optional) output video.",
+        "--output_file", help="Filename of the (optional) output video.",
         default=None)
     parser.add_argument(
         "--show_false_alarms", help="Show false alarms as red bounding boxes.",
@@ -110,4 +110,4 @@ if __name__ == "__main__":
     args = parse_args()
     run(
         args.sequence_dir, args.result_file, args.show_false_alarms,
-        args.detection_file, args.update_ms, args.video_filename)
+        args.detection_file, args.update_ms, args.output_file)
