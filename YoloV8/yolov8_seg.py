@@ -14,7 +14,7 @@ det = open("./RealTimeMOT/YoloV8/vg_3/det/det.txt","w")
 det.close()
 
 from ultralytics import YOLO
-model = YOLO("./RealTimeMOT/YoloV8/models/yolov8n-seg.pt") 
+model = YOLO("./RealTimeMOT/YoloV8/COCO_trained_models/yolov8n-seg.pt") 
 
 def box_label(image, box, label='', color=(128, 128, 128), txt_color=(255, 255, 255)):
   lw = max(round(sum(image.shape) / 2 * 0.002), 2)

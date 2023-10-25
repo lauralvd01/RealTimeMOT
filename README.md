@@ -86,7 +86,7 @@ After you have initialized all the targets for all videos of each video type, us
 
 We use YOLOv8 as a multiple object detector, in order to rapidly identify the objects present in each frame. YOLOv8 is able to detect the objects (the objects on wich he was trained for) in a whole image without having to compute several times some parts of the image.
 
-The file `yolov8_app.py` allows to download the latest pretrained model of YOLOv8 (`yolov8n.pt`) and apply it to each frame of the video specified `"./inputVideos/bateau/bateau_1.mp4"`. On each frame, the detections computed by the model are filtered in order to keep the ones representing one of the `OBJECTS_OF_INTEREST` listed that have a confidence score higher than `100*CONF_TRESHOLD`. 
+The file `yolov8_app.py` allows to download the latest COCO-pretrained model of YOLOv8 (`yolov8n.pt`) and apply it to each frame of the video specified `"./inputVideos/bateau/bateau_1.mp4"`. On each frame, the detections computed by the model are filtered in order to keep the ones representing one of the `OBJECTS_OF_INTEREST` listed that have a confidence score higher than `100*CONF_TRESHOLD`. 
 
 The data for those detections is stored in `"./RealTimeMOT/YoloV8/bateau_3_0.1/det/det.txt"` in the [MOT format](https://motchallenge.net/instructions/) (1 detection per line) :  
 
