@@ -2,15 +2,15 @@ import cv2
 import imutils
 
 import os
-if "vg_3" not in os.listdir("./RealTimeMOT/YoloV8/Train1") :
-  os.mkdir("./RealTimeMOT/YoloV8/Train1/vg_3")
-  os.mkdir("./RealTimeMOT/YoloV8/Train1/vg_3/det")
-  os.mkdir("./RealTimeMOT/YoloV8/Train1/vg_3/img1")
+if "vg_4" not in os.listdir("./RealTimeMOT/YoloV8/Train1") :
+  os.mkdir("./RealTimeMOT/YoloV8/Train1/vg_4")
+  os.mkdir("./RealTimeMOT/YoloV8/Train1/vg_4/det")
+  os.mkdir("./RealTimeMOT/YoloV8/Train1/vg_4/img1")
 
 if "output" not in os.listdir("./RealTimeMOT/YoloV8/Train1") :
   os.mkdir("./RealTimeMOT/YoloV8/Train1/output")
 
-det = open("./RealTimeMOT/YoloV8/Train1/vg_3/det/det.txt","w")
+det = open("./RealTimeMOT/YoloV8/Train1/vg_4/det/det.txt","w")
 det.close()
 
 from ultralytics import YOLO
@@ -62,13 +62,13 @@ CONF_TRESHOLD = 0.10
 
 
 ## Création de seqinfo.ini
-vs = cv2.VideoCapture("./inputVideos/vg/vg_3.mp4")
+vs = cv2.VideoCapture("./inputVideos/vg/vg_4.mp4")
 
 if not vs.isOpened() :
   raise SystemError("Couldn't read the input video")
 
-seq = open("./RealTimeMOT/YoloV8/Train1/vg_3/seqinfo.ini","w")
-seq.write("[Sequence]\nname=vg_3\nimDir=img1")
+seq = open("./RealTimeMOT/YoloV8/Train1/vg_4/seqinfo.ini","w")
+seq.write("[Sequence]\nname=vg_4\nimDir=img1")
 seq.close()
 
 # FrameRate
@@ -76,7 +76,7 @@ try:
 	prop = cv2.cv.CV_CAP_PROP_FPS if imutils.is_cv2() \
 		else cv2.CAP_PROP_FPS
 	fps = float(vs.get(prop))
-	seq = open("./RealTimeMOT/YoloV8/Train1/vg_3/seqinfo.ini","a")
+	seq = open("./RealTimeMOT/YoloV8/Train1/vg_4/seqinfo.ini","a")
 	seq.write("\nframeRate={}".format(fps))
 	seq.close()
 	print("[INFO] {} frames per second in video".format(fps))
@@ -90,7 +90,7 @@ try:
 	prop = cv2.cv.CV_CAP_PROP_FRAME_COUNT if imutils.is_cv2() \
 		else cv2.CAP_PROP_FRAME_COUNT
 	total = int(vs.get(prop))
-	seq = open("./RealTimeMOT/YoloV8/Train1/vg_3/seqinfo.ini","a")
+	seq = open("./RealTimeMOT/YoloV8/Train1/vg_4/seqinfo.ini","a")
 	seq.write("\nseqLength={}".format(total))
 	seq.close()
 	print("[INFO] {} total frames in video".format(total))
@@ -104,7 +104,7 @@ try:
 	prop = cv2.cv.CV_CAP_PROP_FRAME_WIDTH if imutils.is_cv2() \
 		else cv2.CAP_PROP_FRAME_WIDTH
 	width = int(vs.get(prop))
-	seq = open("./RealTimeMOT/YoloV8/Train1/vg_3/seqinfo.ini","a")
+	seq = open("./RealTimeMOT/YoloV8/Train1/vg_4/seqinfo.ini","a")
 	seq.write("\nimWidth={}".format(width))
 	seq.close()
 	print("[INFO] frames of {} width".format(width))
@@ -118,7 +118,7 @@ try:
 	prop = cv2.cv.CV_CAP_PROP_FRAME_HEIGHT if imutils.is_cv2() \
 		else cv2.CAP_PROP_FRAME_HEIGHT
 	height = int(vs.get(prop))
-	seq = open("./RealTimeMOT/YoloV8/Train1/vg_3/seqinfo.ini","a")
+	seq = open("./RealTimeMOT/YoloV8/Train1/vg_4/seqinfo.ini","a")
 	seq.write("\nimHeight={}".format(height))
 	seq.close()
 	print("[INFO] frames of {} height".format(height))
@@ -127,7 +127,7 @@ except:
 	print("An error occurred while trying to determine the height")
 	total = -1
 
-seq = open("./RealTimeMOT/YoloV8/Train1/vg_3/seqinfo.ini","a")
+seq = open("./RealTimeMOT/YoloV8/Train1/vg_4/seqinfo.ini","a")
 seq.write("\nimExt=.jpg")
 seq.close()
 
@@ -148,7 +148,7 @@ while acc < total :
   if grabbed:
     acc +=1
     # save blank frame in images folder
-    cv2.imwrite("./RealTimeMOT/YoloV8/Train1/vg_3/img1/"+zeros[:i-len(str(acc))]+str(acc)+".jpg", frame)
+    cv2.imwrite("./RealTimeMOT/YoloV8/Train1/vg_4/img1/"+zeros[:i-len(str(acc))]+str(acc)+".jpg", frame)
 
     # predict bounding boxes on frame
     results = model.predict(frame, verbose=False)
@@ -162,7 +162,7 @@ while acc < total :
           box_label(frame, box, label, color)
 
           # save detection in det.txt
-          det = open("./RealTimeMOT/YoloV8/Train1/vg_3/det/det.txt","a")
+          det = open("./RealTimeMOT/YoloV8/Train1/vg_4/det/det.txt","a")
           bbMOT = formatMOT(acc,box)
           print(bbMOT)
           det.write(bbMOT)
@@ -172,7 +172,7 @@ while acc < total :
     # save frame in video writer
     if writer is None:
       fourcc = cv2.VideoWriter_fourcc(*"MJPG")
-      writer = cv2.VideoWriter('./RealTimeMOT/YoloV8/Train1/output/detections_vg_3.avi', fourcc=fourcc, fps=fps,
+      writer = cv2.VideoWriter('./RealTimeMOT/YoloV8/Train1/output/detections_vg_4.avi', fourcc=fourcc, fps=fps,
       frameSize=(frame.shape[1], frame.shape[0]), isColor=True)
     
 
