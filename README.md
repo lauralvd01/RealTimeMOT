@@ -105,4 +105,6 @@ Moreover, to keep the MOT format, we store in a `{video_file_name}` folder a fil
 
 In a subfolder `{video_file_name}/det` will be stored the `det.txt` file containing the data for the filtered detections, and in an other subfolder `{video_file_name}/img1` will be stored each frame of the video, in `.jpg` format.
 
+yolo task=detect mode=train model=yolov8n.pt data=D:/LEVRAUDLaura/Dev/LowerPythonEnv/inputTrain5/data.yaml epochs=100 imgsz=640
+
 ## DeepSORT
