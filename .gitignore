@@ -1,8 +1,6 @@
-/OpenCVTrackers/outputVideos
-
-/DeepSORT/deep_sort-master/outputVideos
-/DeepSORT/deep_sort-master/*/output
-
-/YoloV8/*/output
-/YoloV8/*/img1
-/YoloV8/*/3D
+*.mp4
+*.mov
+*.avi
+*.jpg
+*.jpeg
+*.png
