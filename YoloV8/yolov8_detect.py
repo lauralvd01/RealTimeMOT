@@ -201,7 +201,7 @@ class Detect :
       
       boxes = results[0].boxes.data
       for box in boxes:
-        label = self.model.labels[int(box[-1])+1]
+        label = self.model.labels[int(box[-1])]
         if box[-2] > CONF_TRESHOLD :
             color = self.model.colors[int(box[-1])]
             Detect.box_label(frame, box, label, color)
@@ -218,8 +218,8 @@ class Detect :
   
 
 VIDEO_PATH = "D:/LEVRAUDLaura/Data/H3_Depart_court.mov"
-OUTPUT_DIR = "D:/LEVRAUDLaura/Dev/LowerPythonEnv/RealTimeMOT/YoloV8/train_cd_best_model"
-MODEL = "./RealTimeMOT/YoloV8/Train15/runs/detect/train/weights/best.pt"
+OUTPUT_DIR = "D:/LEVRAUDLaura/Dev/LowerPythonEnv/RealTimeMOT/YoloV8/train_cd_best_and_new_model/output"
+MODEL = "D:/LEVRAUDLaura/Dev/LowerPythonEnv/RealTimeMOT/YoloV8/train_cd_best_and_new_model/weights/best.pt"
 CONF_TRESHOLD = 0.10
 
 detect = Detect(VIDEO_PATH,OUTPUT_DIR,MODEL,CONF_TRESHOLD)
