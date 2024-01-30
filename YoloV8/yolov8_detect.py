@@ -148,10 +148,10 @@ class Detect :
     
     return bbMOT
   
-  def __init__(self,video_path,output_dir,model,conf) -> None:
+  def __init__(self,video_path,output_dir,model=None,conf=None) -> None:
     self.video = GetInfos(video_path,output_dir)
     self.model = YoloModel(model)
-    self.conf = conf
+    self.conf = conf if conf is not None else 0.3
     self.video_output = None
     self.zeros = None
     det = open(output_dir+os.path.sep+"det.txt","w")
@@ -219,8 +219,8 @@ class Detect :
 
 VIDEO_PATH = "D:/LEVRAUDLaura/Data/H3_Depart_court.mov"
 OUTPUT_DIR = "D:/LEVRAUDLaura/Dev/LowerPythonEnv/RealTimeMOT/YoloV8/train_cd_best_and_new_model/output"
-MODEL = "D:/LEVRAUDLaura/Dev/LowerPythonEnv/RealTimeMOT/YoloV8/train_cd_best_and_new_model/weights/best.pt"
-CONF_TRESHOLD = 0.10
+MODEL = "D:/LEVRAUDLaura/Dev/LowerPythonEnv/RealTimeMOT/YoloV8/train_cd_best_and_new_model/weights/best.pt" # Default : yolov8n.pt trained on COCO dataset
+CONF_TRESHOLD = 0.10 # Default : 0.3
 
 detect = Detect(VIDEO_PATH,OUTPUT_DIR,MODEL,CONF_TRESHOLD)
 detect.run()

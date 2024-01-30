@@ -86,15 +86,21 @@ After you have initialized all the targets for all videos of each video type, us
 
 We use YOLOv8 as a multiple object detector, in order to rapidly identify the objects present in each frame. YOLOv8 is able to detect the objects (the objects on wich he was trained for) in a whole image without having to compute several times some parts of the image.
 
-The file `yolov8_app.py` allows to download the latest COCO-pretrained model of YOLOv8 (`yolov8n.pt`) and apply it to each frame of the video specified `"./inputVideos/bateau/bateau_1.mp4"`. On each frame, the detections computed by the model are filtered in order to keep the ones representing one of the `OBJECTS_OF_INTEREST` listed that have a confidence score higher than `100*CONF_TRESHOLD`. 
+### Use yolov8 to detect objects in a video
 
-The data for those detections is stored in `"./RealTimeMOT/YoloV8/bateau_3_0.1/det/det.txt"` in the [MOT format](https://motchallenge.net/instructions/) (1 detection per line) :  
+The file `yolov8_detect.py` allows to use a custom model and apply it to each frame of the video specified. On each frame, the detections computed by the model are filtered in order to keep the ones that have a confidence score higher than the confidence treshold specified. A video with the same properties as the input is written with the bouding boxes of the selected detections drawn on each frame.
+
+To specify the arguments, you need to change the paths in front of `VIDEO_PATH`, `OUTPUT_DIR`, `MODEL` and `CONF_TRESHOLD`. Default `MODEL` and `CONF_TRESHOLD`  are respectively `yolov8n.pt` and `0.3`. `yolov8n.pt` is the latest COCO-pretrained model of YOLOv8, trained on the COCO_dataset.
+
+As outputs you obtain, in the ouput directory you specified, an `img1` folder containing all the original frames of the input video (in `.jpg` format), a `det.txt` file with each detection data, and a `seqinfo.ini` with the input video informations.
+
+The detections data are stored in the [MOT format](https://motchallenge.net/instructions/) (1 detection per line) :  
 
     {frame_number},-1,{location.left},{location.top},{width},{height},{score},-1,-1
 
-Moreover, to keep the MOT format, we store in a `{video_file_name}` folder a file `seqinfo.ini` that follows these directives :
+The `seqinfo.ini` file also keeps the MOT format, except for the first line that store the date instead of the sequence number :
 
-    [Sequence]
+    [Date]
     name={video_file_name}
     imDir=img1
     frameRate={fps}
@@ -103,8 +109,21 @@ Moreover, to keep the MOT format, we store in a `{video_file_name}` folder a fil
     imHeight={frame_height}
     imExt=.jpg
 
-In a subfolder `{video_file_name}/det` will be stored the `det.txt` file containing the data for the filtered detections, and in an other subfolder `{video_file_name}/img1` will be stored each frame of the video, in `.jpg` format.
+The file `yolov8_app.py` is an old version of the `yolov8_detect.py` file. You shouldn't have to use it, except in case of time mesuring performance, but be careful to cahnge all parameters and arguments. The `yolov8_detect.py` file is truely here to avoid you from thinking of how to change the code for you to use it with your data.
 
-yolo task=detect mode=train model=yolov8n.pt data=D:/LEVRAUDLaura/Dev/LowerPythonEnv/inputTrain5/data.yaml epochs=100 imgsz=640
+### Use yolov8 to train a custom model on a custom dataset
+
+The tutorial is here : [Create a dataset with Roboflow and train a custom model on it](https://github.com/lauralvd01/RealTimeMOT/blob/main/YoloV8/Roboflow%20-%20Train%20a%20model.pdf).
+
+Also, don't hesitate to take a look at the [ultralytics documentation](https://docs.ultralytics.com/modes/train/).
+
+With these documents, you should be able to create your own custom dataset, export it, and train a model on this dataset (either you start with the latest COCO-pretrained yolov8 model or you continue the training of one of your custom models).
+
+As a reminder, here is the basic command you should execute in your command prompt (after python and ultralytics are installed) to train a model to detection on a certain dataset :
+
+    yolo task=detect mode=train model=$path_to_the_model_you_want_to_start_with_OR_yolov8n.pt$ data=$path_to_your_dataset_folder$\data.yaml
+
+Don't forget there are many options you can use and change to adapt your training process to the situations you to work with : go see the [documentation](https://docs.ultralytics.com/modes/train/#arguments) !
+
 
 ## DeepSORT
