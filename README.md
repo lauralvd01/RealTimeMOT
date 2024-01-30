@@ -135,3 +135,73 @@ Don't forget there are many options you can use and change to adapt your trainin
 ##
 
 ## DeepSORT
+
+ > DeepSORT is an extension of the [SORT](https://github.com/abewley/sort) algorithm of Alex Bewley, a Simple Online and Realtime Tracking algorithm for 2D multiple object tracking in video sequences. <br />
+ [See more about SORT](https://arxiv.org/abs/1602.00763)
+ 
+ > DeepSORT integrates appearance information based on a deep appearance descriptor. The implementation in the `deep_sort-master` folder is the one from [Nicolaï Wokje](https://github.com/nwojke/deep_sort) repository, modified in order to be used with [YoloV8](#yolov8) detection ouputs. <br />
+ [See more about DeepSORT](https://arxiv.org/abs/1703.07402)
+
+ DeepSORT, as it is implemented here, starts with an input video and a detection file, listing all the detections of each frame of the video. Then it goes through the input video to link detections of one frame to the detections of the next frame, in order to assign an identity number to each detection and give the same number to to the detection of the next frame that corrspond to the same object. 
+
+ So at the beginning, what you have is single images with bounding boxes, unrealated to each other. At the end, for each object detected in one frame, you have its moves through the video, over time : each detection of one frame is related to the bounding boxe that detect the same object in the next frame. Thus you can obtain a video with the bounding boxes drawn with their associated identity number.
+
+ To perform this process, you first have to transform the [YoloV8](#yolov8) detection ouputs, that are in the [MOT format](https://motchallenge.net/instructions/), into a numpy table exported as a npy file. That's what the `tools\generate_detections.py` file does. Then you can run the `deep_sot_app.py` to go through the process. If you want to get the video output, you then have to run the `generate_videos.py` file.
+
+ To do so, you either can run those file by a command and list all the arguments, or you can copy the `vscode\launch.json` file to root of your debug folder and change the arguments in this file each time you want to run the DeepSORT algorithm.
+
+ The `launch.json` file should go as :
+```
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [
+                /*/ Generate_detections
+                "--model","./RealTimeMOT/DeepSORT/deep_sort-master/networks/mars-small128.pb",
+                "--mot_dir","$path_to_the_yolov8_outputs_folder$",
+                "--detection_dir","$path_to_the_yolov8_outputs_folder$",
+                "--output_dir","$path_to_your_deepsort_output_folder$"
+                /*/
+
+                /*/ Deep_sort_app
+                "--sequence_dir","$path_to_the_yolov8_outputs_folder$",
+                "--detection_file","$path_to_the_yolov8_outputs_folder$\detections.npy",
+                "--output_file","$path_to_your_deepsort_output_folder$\$name_of_your_deepsort_result_file$.txt",
+                "--min_confidence","0.3",
+                "--nms_max_overlap","1.0",
+                "--min_detection_height", "0",
+                "--max_cosine_distance", "0.2",
+                "--nn_budget","100",
+                "--display","True"
+                /*/
+
+                /*/ Generate_videos
+                "--mot_dir","$path_to_the_yolov8_outputs_folder$",
+                "--result_file","$path_to_your_deepsort_output_folder$\$name_of_your_deepsort_result_file$.txt",
+                "--output_dir","$path_to_your_deepsort_video_output_folder$",
+                "--convert_h264","False"
+                /*/
+            ]
+        }
+    ]
+}
+```
+
+Change the arguments as suggested, then transform the `/*/` in `//` just around the arguments of the file you're about to run, then go on this file and run debug.
+
+It should get you, in the ouput directory you provided, the results of your deepsort algorithm as a `txt` file; in the video ouput directory you provided, the video of your results as an `avi` file; and in the input directory, the one where you stored your yolov8 detections results, the same detections results but in a `npy` deepsort-usable format.
+
+
+
+##
+
+## Live
+
+The `Live` folder contains some of the last models trained, a beginning of an olgorithm to run both [YoloV8](#yolov8) and [DeepSORT](#deepsort) in a "realtime mode". That means that the algorithm would take a video as an input, and for each frame perform the yolo detection and then the identity deepsort-association before to go with the next frame.
