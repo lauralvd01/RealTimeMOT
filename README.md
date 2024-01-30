@@ -1,6 +1,6 @@
 # Real Time Multiple Object Tracking
 <p align="center">
-    <img src="deep_sort_Train14_bateau_2-ezgif.com-video-to-gif-converter.gif" /> <img src="deep_sort_Train14_bateau_6-ezgif.com-video-to-gif-converter.gif" />
+    <img src="deep_sort_Train14_bateau_2-ezgif.com-video-to-gif-converter.gif" width="30%"/> <img src="deep_sort_Train14_bateau_6-ezgif.com-video-to-gif-converter.gif" width="30%"/>
     <img src="deep_sort_Train14_vg_3-ezgif.com-video-to-gif-converter.gif" />
 </p>
 
