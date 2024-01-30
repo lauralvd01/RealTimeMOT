@@ -1,4 +1,8 @@
 # Real Time Multiple Object Tracking
+<p align="center">
+    <img src="deep_sort_Train14_bateau_2-ezgif.com-video-to-gif-converter.gif" /> <img src="deep_sort_Train14_bateau_6-ezgif.com-video-to-gif-converter.gif" />
+    <img src="deep_sort_Train14_vg_3-ezgif.com-video-to-gif-converter.gif" />
+</p>
 
 In order to use this repo *(at least as I'm doing it on Windows 10)* :  
 1. install [Visual Studio Code](https://code.visualstudio.com/)
@@ -48,6 +52,7 @@ Paste
 
     > git clone https://github.com/lauralvd01/RealTimeMOT.git
 
+##
 
 ## OpenCVTrackers
 
@@ -78,6 +83,8 @@ The results will be stored in the `"./RealTimeMOT/OpenCVTrackers/dataFiles/init/
 ### Test each tracker on each target of each video
 
 After you have initialized all the targets for all videos of each video type, use `testAll.py` : fill `video_types` with the list of your video types, select the input folder `"./inputVideos/`, the folder with the initializations of your targets `"./RealTimeMOT/OpenCVTracvkers/dataFiles/init/"`, the output folder for the video results `"./RealTimeMOT/OpenCVTrackers/outputVideos/"` and the output folder for the data results `"./RealTimeMOT/OpenCVTracvkers/dataFiles/test/"`.
+
+##
 
 ## YoloV8
 
@@ -125,5 +132,6 @@ As a reminder, here is the basic command you should execute in your command prom
 
 Don't forget there are many options you can use and change to adapt your training process to the situations you to work with : go see the [documentation](https://docs.ultralytics.com/modes/train/#arguments) !
 
+##
 
 ## DeepSORT
