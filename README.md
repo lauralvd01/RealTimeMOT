@@ -1,7 +1,7 @@
 # Real Time Multiple Object Tracking
 <p align="center">
-    <img src="deep_sort_Train14_bateau_2-ezgif.com-video-to-gif-converter.gif" width="49%"/> <img src="deep_sort_Train14_bateau_6-ezgif.com-video-to-gif-converter.gif" width="49%"/>
-    <img src="deep_sort_Train14_vg_3-ezgif.com-video-to-gif-converter.gif" />
+    <img src="gif\deep_sort_Train14_bateau_2-ezgif.com-video-to-gif-converter.gif" width="49%"/> <img src="gif\deep_sort_Train14_bateau_6-ezgif.com-video-to-gif-converter.gif" width="49%"/>
+    <img src="gif\deep_sort_Train14_vg_3-ezgif.com-video-to-gif-converter.gif" />
 </p>
 
 In order to use this repo *(at least as I'm doing it on Windows 10)* :  
