@@ -4,46 +4,52 @@
     <img src="gif\deep_sort_Train14_vg_3-ezgif.com-video-to-gif-converter.gif" />
 </p>
 
+##
+
+*This repo was built during my 5-month internship at Trimaran VFX - Georacing. See the my repo Trimaran - Georacing for more information.*
+
+##
+
 In order to use this repo *(at least as I'm doing it on Windows 10)* :  
-1. install [Visual Studio Code](https://code.visualstudio.com/)
-2. download and install [Python 3.11.6](https://www.python.org/downloads/release/python-3116/) with __Windows installer(64-bit)__
-3. open VS Code __as an Administrator__
-4. install VS Code Python extensions (`Ctrl`+`Shift`+`X`) for example [Python Extension Pack](https://marketplace.visualstudio.com/items?itemName=donjayamanne.python-extension-pack)
-5. create a new folder
-6. in the command palette (`Crtl`+`Shift`+`P`) :
+1. Install [Visual Studio Code](https://code.visualstudio.com/)
+2. Download and install [Python 3.11.6](https://www.python.org/downloads/release/python-3116/) with __Windows installer(64-bit)__
+3. Open VS Code __as an Administrator__
+4. Install VS Code Python extensions (`Ctrl`+`Shift`+`X`) for example [Python Extension Pack](https://marketplace.visualstudio.com/items?itemName=donjayamanne.python-extension-pack)
+5. Create a new folder
+6. In the command palette (`Crtl`+`Shift`+`P`) :
     1. Python: Create Environment... -> `.Venv`
     2. Python: Select Interpreter... -> `Python 3.11.6 64-bit`
-7. create and execute a new python file      
+7. Create and execute a new python file      
 
 `test.py`
 
     print("test")
 
-8. in the python terminal :  
+8. In the python terminal :  
 
-Import OpenCV cv2
+Import OpenCV cv2 in order to use [OpenCVTrackers](#opencvtrackers),
 
     > pip3 install opencv-python
     > pip3 install opencv-contrib-python
 
-In order to use [OpenCVTrackers](#opencvtrackers) and import pandas
+Import pandas and xml extensions,
 
     > pip3 install pandas
     > pip3 install xlsxWriter
     > pip3 install openpyxl
 
-In order to use [YoloV8](#yolov8) and import imutils, ultralytics
+Import imutils and ultralytics in order to use [YoloV8](#yolov8),
 
     > pip3 install imutils
     > pip3 install ultralytics
 
-In order to use [DeepSORT](#deepsort) and import sklearn, tensorflow
+And import sklearn and tensorflow in order to use [DeepSORT](#deepsort).
 
     > pip3 install scikit-learn
     > pip3 install tensorflow
 
 
-9. download and install __Github__ : in your VS Code in the pannel __Source Control__ (`Ctrl`+`Shift`+`G`) click on `Download Git for Windows` and download the latest __64-bit__ version of __Git for Windows__. During the installation, be aware of selecting the `Use Visual Studio Code as Git's default editor` and `Use Windows' default console window` options with the other default options
+9. Download and install __Github__ : in your VS Code in the pannel __Source Control__ (`Ctrl`+`Shift`+`G`) click on `Download Git for Windows` and download the latest __64-bit__ version of __Git for Windows__. During the installation, be aware of selecting the `Use Visual Studio Code as Git's default editor` and `Use Windows' default console window` options with the other default options
 10. back in VS Code, connect to your account Github
 
 11. lastly, in the python terminal (in your brand new folder with the right environment)
